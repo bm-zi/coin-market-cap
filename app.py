@@ -26,6 +26,7 @@ def home():
 
 
 api.add_resource(CoinList, '/coins')
+api.add_resource(Coin, '/coin/<string:name>')
 api.add_resource(HistoricalList, '/historicals')
 api.add_resource(UserRegister, '/register')
 

@@ -27,13 +27,12 @@ class CoinModel(db.Model):
     date_added = db.Column(db.String(80))
     date_launched = db.Column(db.String(80))
 
-    def __init__(self, _id, name, slug, symbol, status, category, description,
+    def __init__(self, name, slug, symbol, status, category, description,
                     subreddit, notice, tags, tag_names, website, twitter,
                     message_board, chat, explorer, reddit, technical_doc,
                     source_code, announcement, platform_id, date_added,
                     date_launched):
-                    
-        self.id = _id
+
         self.name = name
         self.slug = slug
         self.symbol = symbol
@@ -59,7 +58,6 @@ class CoinModel(db.Model):
 
     def json(self):
         return {
-                'id': self.id,
                 'name': self.name,
                 'slug': self.slug, 
                 'symbol': self.symbol, 
@@ -84,14 +82,14 @@ class CoinModel(db.Model):
                 'date_launched': self.date_launched
         }
 
-    def save_to_db(self):
-        db.session.add(self)
-        db.session.commit()
-
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
-    @classmethod    
-    def find_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()    
