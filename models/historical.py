@@ -1,28 +1,32 @@
+import sqlalchemy
+from sqlalchemy.sql import sqltypes
 from db import db
 
+
 class HistoricalModel(db.Model):
-    __tablename__ = 'historicals'
+    __tablename__ = 'historical'
 
-    date = db.Column(db.String(80))
-    coin_id = db.Column(db.Integer, primary_key=True)
-    cmc_rank = db.Column(db.Integer)
-    market_cap = db.Column(db.Float(precision=2))
-    price = db.Column(db.Float(precision=2))
-    _open = db.Column(db.Float(precision=2))
-    high = db.Column(db.Float(precision=2))
-    low = db.Column(db.Float(precision=2))
-    close = db.Column(db.Float(precision=2))
-    time_high = db.Column(db.String(80))
-    time_low = db.Column(db.String(80))
-    volume_24h = db.Column(db.Float(precision=2))
-    percent_change_1h = db.Column(db.Float(precision=2))
-    percent_change_24h = db.Column(db.Float(precision=2))
-    percent_change_7d = db.Column(db.Float(precision=2))
-    circulating_supply = db.Column(db.Float(precision=2))
-    total_supply = db.Column(db.Float(precision=2))
-    max_supply = db.Column(db.Float(precision=2))
-    num_market_pairs = db.Column(db.Integer)
+    date = db.Column(sqltypes.Text)
+    coin_id = db.Column(sqltypes.Integer, primary_key=True)
+    cmc_rank = db.Column(sqltypes.Integer)
+    market_cap = db.Column(sqltypes.REAL)
+    price = db.Column(sqltypes.REAL)
+    _open = db.Column(sqltypes.REAL)
+    high = db.Column(sqltypes.REAL)
+    low = db.Column(sqltypes.REAL)
+    close = db.Column(sqltypes.REAL)
+    time_high = db.Column(sqltypes.Text)
+    time_low = db.Column(sqltypes.Text)
+    volume_24h = db.Column(sqltypes.REAL)
+    percent_change_1h = db.Column(sqltypes.REAL)
+    percent_change_24h = db.Column(sqltypes.REAL)
+    percent_change_7d = db.Column(sqltypes.REAL)
+    circulating_supply = db.Column(sqltypes.REAL)
+    total_supply = db.Column(sqltypes.REAL)
+    max_supply = db.Column(sqltypes.REAL)
+    num_market_pairs = db.Column(sqltypes.Integer)
 
+    sqlalchemy.schema.Index('data_rank', date, cmc_rank)
     def __init__(self, date, coin_id, cmc_rank, market_cap, price,
                     _open, high, low, close, time_high, time_low, 
                     volume_24h, percent_change_1h, percent_change_24h, 
@@ -53,7 +57,7 @@ class HistoricalModel(db.Model):
     def json(self):
         return {
             'date': self.date, 
-            'coin_id': self.coin_id, 
+            'coin_id': self.id, 
             'cmc_rank': self.cmc_rank, 
             'market_cap': self.market_cap, 
             'price': self.price, 
@@ -79,9 +83,8 @@ class HistoricalModel(db.Model):
 
     @classmethod    
     def find_by_id(cls, _id):
-        return cls.query.filter_by(coin_id=_id).first()
+        return cls.query.filter_by(coin_id=_id).all()
     
-
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()

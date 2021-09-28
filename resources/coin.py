@@ -35,6 +35,8 @@ class Coin(Resource):
             return coin.json()
         return {'message': 'Coin not fond'}, 404
     
+
+
     def post(self, name):
         if CoinModel.find_by_name(name):
             return {'message': "A coin with the name '{}' already exists.".format(name)}, 400
@@ -115,3 +117,11 @@ class CoinList(Resource):
     def get(self):
         return {'coins': list(map(lambda x: x.json(), CoinModel.query.all()))}
         # return {'coins': [x.json() for x in ItemModel.query.all()]}
+
+
+class CoinInfo(Resource):
+    def get(self, id):
+        coin = CoinModel.find_by_id(id)
+        if coin:
+            return coin.json()
+        return {'message': 'Coin not fond'}, 404

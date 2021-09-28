@@ -1,31 +1,35 @@
+from sqlalchemy.sql import sqltypes
 from db import db
 
 class CoinModel(db.Model):
     __tablename__ = 'coins'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    slug = db.Column(db.String(80))
-    symbol = db.Column(db.String(80))
-    status = db.Column(db.String(80))
-    category = db.Column(db.String(80))
-    description = db.Column(db.String(80))
-    subreddit = db.Column(db.String(80))
-    notice = db.Column(db.String(80))
-    tags = db.Column(db.String(80))
-    tag_names = db.Column(db.String(80))
-    website = db.Column(db.String(80))
-    twitter = db.Column(db.String(80))
-    message_board = db.Column(db.String(80))
-    chat = db.Column(db.String(80))
-    explorer = db.Column(db.String(80))
-    reddit = db.Column(db.String(80))
-    technical_doc = db.Column(db.String(80))
-    source_code = db.Column(db.String(80))
-    announcement = db.Column(db.String(80))
-    platform_id = db.Column(db.Integer)
-    date_added = db.Column(db.String(80))
-    date_launched = db.Column(db.String(80))
+    # coin_id = db.Column(db.Integer, db.ForeignKey('historicals.coin_id'))
+    # historicals = db.relationship('HistoricalModel')
+
+    id = db.Column(sqltypes.Integer, primary_key=True)
+    name = db.Column(sqltypes.Text)
+    slug = db.Column(sqltypes.Text)
+    symbol = db.Column(sqltypes.Text)
+    status = db.Column(sqltypes.Text)
+    category = db.Column(sqltypes.Text)
+    description = db.Column(sqltypes.Text)
+    subreddit = db.Column(sqltypes.Text)
+    notice = db.Column(sqltypes.Text)
+    tags = db.Column(sqltypes.Text)
+    tag_names = db.Column(sqltypes.Text)
+    website = db.Column(sqltypes.Text)
+    twitter = db.Column(sqltypes.Text)
+    message_board = db.Column(sqltypes.Text)
+    chat = db.Column(sqltypes.Text)
+    explorer = db.Column(sqltypes.Text)
+    reddit = db.Column(sqltypes.Text)
+    technical_doc = db.Column(sqltypes.Text)
+    source_code = db.Column(sqltypes.Text)
+    announcement = db.Column(sqltypes.Text)
+    platform_id = db.Column(sqltypes.Integer)
+    date_added = db.Column(sqltypes.Text)
+    date_launched = db.Column(sqltypes.Text)
 
     def __init__(self, name, slug, symbol, status, category, description,
                     subreddit, notice, tags, tag_names, website, twitter,
@@ -55,11 +59,10 @@ class CoinModel(db.Model):
         self.platform_id = platform_id
         self.date_added = date_added
         self.date_launched = date_launched
-
-        self.coin_id =  db.Column(db.Integer, db.ForeignKey('historicals.coin_id'))
-
+        
     def json(self):
         return {
+                'id': self.id,
                 'name': self.name,
                 'slug': self.slug, 
                 'symbol': self.symbol, 
@@ -87,6 +90,10 @@ class CoinModel(db.Model):
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
 
     def save_to_db(self):
         db.session.add(self)

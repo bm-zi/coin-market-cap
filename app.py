@@ -4,7 +4,7 @@ from flask_jwt import JWT
 from security import authenticate, identity
 
 from resources.user import UserRegister
-from resources.coin import Coin, CoinList
+from resources.coin import Coin, CoinList, CoinInfo
 from resources.historical import Historical, HistoricalList
 
 
@@ -26,6 +26,7 @@ def home():
 
 api.add_resource(CoinList, '/coins')
 api.add_resource(Coin, '/coin/<string:name>')
+api.add_resource(CoinInfo, '/coin_info/<int:id>')
 api.add_resource(HistoricalList, '/historicals')
 api.add_resource(UserRegister, '/register')
 
