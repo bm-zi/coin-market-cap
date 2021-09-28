@@ -24,7 +24,6 @@ jwt = JWT(app, authenticate, identity) # /auth
 def home():
     return render_template('home.html')
 
-
 api.add_resource(CoinList, '/coins')
 api.add_resource(Coin, '/coin/<string:name>')
 api.add_resource(HistoricalList, '/historicals')

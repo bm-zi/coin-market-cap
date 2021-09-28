@@ -49,7 +49,7 @@ class HistoricalModel(db.Model):
         self.max_supply = max_supply
         self.num_market_pairs = num_market_pairs
 
-    
+
     def json(self):
         return {
             'date': self.date, 
@@ -79,4 +79,9 @@ class HistoricalModel(db.Model):
 
     @classmethod    
     def find_by_id(cls, _id):
-        return cls.query.filter_by(coin_id=_id).first()        
+        return cls.query.filter_by(coin_id=_id).first()
+    
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()

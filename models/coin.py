@@ -56,6 +56,8 @@ class CoinModel(db.Model):
         self.date_added = date_added
         self.date_launched = date_launched
 
+        self.coin_id =  db.Column(db.Integer, db.ForeignKey('historicals.coin_id'))
+
     def json(self):
         return {
                 'name': self.name,
@@ -92,4 +94,4 @@ class CoinModel(db.Model):
 
     def delete_from_db(self):
         db.session.delete(self)
-        db.session.commit()    
+        db.session.commit()
